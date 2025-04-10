@@ -49,7 +49,8 @@ void EditorPresence::_process(double delta)
         if (edited_scene_root != nullptr) 
         {
             String filename = edited_scene_root->get_scene_file_path().get_file();
-            activity.SetState(String("Editing: \"" + filename + "\"").utf8());
+            String scene_name = filename.is_empty() ? "New Scene"  : "\"" + filename + "\"";
+            activity.SetState(String("Editing: " + scene_name).utf8());
             if (result == discord::Result::Ok)
                 core->ActivityManager().UpdateActivity(activity, [](discord::Result result) {});
         }
