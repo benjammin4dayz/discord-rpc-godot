@@ -46,9 +46,14 @@ void EditorPresence::_process(double delta)
     if (state_string.utf8() != activity.GetState())
     {
         godot::Node *edited_scene_root = get_tree()->get_edited_scene_root();
-        activity.SetState(String("Editing: \"" + edited_scene_root->get_scene_file_path() + "\"").replace("res://", "").utf8());
-        if (result == discord::Result::Ok)
-            core->ActivityManager().UpdateActivity(activity, [](discord::Result result) {});
+        if (edited_scene_root != nullptr) 
+        {
+            activity.SetState(
+                String("Editing: \"" + edited_scene_root->get_scene_file_path() + "\"").replace("res://", "").utf8()
+            );
+            if (result == discord::Result::Ok)
+                core->ActivityManager().UpdateActivity(activity, [](discord::Result result) {});
+        }
     }
     if (result == discord::Result::Ok)
         core->RunCallbacks();
